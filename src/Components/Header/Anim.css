@@ -1,0 +1,74 @@
+.search{
+    background-color: rgba(196, 196, 196, 0.541);
+    color: white;
+    width: 100%;
+    opacity: 0;
+    height: 100vh;
+    pointer-events: none;
+    position: fixed !important;
+    top: 0%;
+    transition: .5s;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+}
+
+.search span{
+    color: white;
+    font-size: 40px;
+    position: relative;
+    cursor: pointer;
+    right: 5%;
+}
+
+.search.active{
+    pointer-events: all;
+    opacity: 1;
+}
+
+.BurgerCover{
+    width: 100%;
+    background-color: rgba(196, 196, 196, 0.541);
+    z-index: 10;
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+    transition: .3s;
+    height: 100vh;
+}
+
+.activeBurgerCover{
+    opacity: 1;
+    pointer-events: all;
+}
+
+.burger{
+    width: 25%;
+    background: white;
+    z-index: 10;
+    position: fixed;
+    transition: .3s;
+    height: 100vh;
+    right: -100%;
+    animation: item 1s linear 1 forwards;
+}
+
+.activeBurger{
+    right: 0%;
+}
+
+.profile{
+    width: 100%;
+    background-color: rgba(196, 196, 196, 0.541);
+    z-index: 10;
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+    transition: .3s;
+    height: 100vh;
+}
+
+.activeProfile{
+    opacity: 1;
+    pointer-events: all;
+}

@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import Footer from "./Components/Footer/Footer"
+import Header from "./Components/Header/Header"
+import Main from "./Components/Main/Main"
+import cls from './App.module.css'
+import {useAuthState} from 'react-firebase-hooks/auth'
+import { fire } from './Components/admin/firebase'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+    const [user , loading] = useAuthState(fire.auth());
+
+    return (
+        <section className={cls.body}>
+            <Header/>
+            <Main/>
+            <Footer/>
+        </section>
+    )   
 }
 
-export default App;
+export default App
