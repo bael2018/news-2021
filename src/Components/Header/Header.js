@@ -4,26 +4,26 @@ import { FaSearch , FaBars } from 'react-icons/fa'
 import { useState } from "react"
 import { BiArrowBack , BiSearch , BiUserCircle} from 'react-icons/bi'
 import './Anim.css'
+import {fire , provider} from '../admin/firebase'
 
 const Header = () => {
     const [el , setEl] = useState(false)
     const showEl = () => setEl(!el)
 
-    const [burg , setBurg] = useState(false)
-    const showBurg = () => setBurg(!burg)
-
     const [pro , setPro] = useState(false)
     const showPro = () => setPro(!pro)
 
-    const [ownInfo , setOwnInfo] = useState(false)
-    const showOnwInfo = () => setOwnInfo(!ownInfo)
-
-    document.addEventListener('click' , e => {
+    const signIn = e => {
         e.preventDefault()
-        if(e.target.id === 'cover'){
-            showBurg()
-        }
-    })
+
+        fire.auth().signInWithPopup(provider)
+        .then(res => {
+            console.log(res);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
 
     return (
         <>
@@ -37,7 +37,10 @@ const Header = () => {
                         </div>
 
                         <div className={cls.profile_body_content}>
-                            
+                            <div className={cls.succssed}>
+                                <h3>Войти</h3>
+                                <img onClick={signIn} src="http://pngimg.com/uploads/google/google_PNG19644.png"/>
+                            </div>
                         </div>  
                     </div>
                 </div>
@@ -125,12 +128,6 @@ const Header = () => {
                     </div>
                 </div>
             </section>
-            <section id='cover' className={burg ? 'BurgerCover activeBurgerCover' : 'BurgerCover'}></section>
-            <section className={burg ? 'burger activeBurger' : 'burger'}>
-                <div className={cls.burger_header}>
-                    <span onClick={showBurg} className={cls.closeBurgerButton}>x</span>
-                </div>
-            </section>
             <section className={cls.nav}>
                 <div className={cls.nav_inner , cls.nav_inner_upper}>
                     <div>
@@ -147,9 +144,6 @@ const Header = () => {
                             </li>
                             <li>
                                 <BiUserCircle onClick={showPro}/>
-                            </li>
-                            <li>
-                                <FaBars onClick={showBurg}/>
                             </li>
                         </ul>
                     </div>
