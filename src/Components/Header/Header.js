@@ -3,8 +3,10 @@ import cls from './Header.module.css'
 import { FaSearch , FaBars } from 'react-icons/fa'
 import { useState } from "react"
 import { BiArrowBack , BiSearch , BiUserCircle} from 'react-icons/bi'
+import { FiEdit } from 'react-icons/fi'
 import './Anim.css'
 import {fire , provider} from '../admin/firebase'
+import {useAuthState} from 'react-firebase-hooks/auth'
 
 const Header = () => {
     const [el , setEl] = useState(false)
@@ -12,6 +14,8 @@ const Header = () => {
 
     const [pro , setPro] = useState(false)
     const showPro = () => setPro(!pro)
+
+    const [user] = useAuthState(fire.auth());
 
     const signIn = e => {
         e.preventDefault()
@@ -37,19 +41,22 @@ const Header = () => {
                         </div>
 
                         <div className={cls.profile_body_content}>
-                            <div className={cls.succssed}>
-                                <h3>Войти</h3>
-                                <img onClick={signIn} src="http://pngimg.com/uploads/google/google_PNG19644.png"/>
-                            </div>
+                            {
+                                user ? (
+                                    <div>
+                                        <h3>Hello world</h3>
+                                    </div>
+                                ) : (
+                                    <div className={cls.succssed}>
+                                        <h3>Войти</h3>
+                                        <img onClick={signIn} src="http://pngimg.com/uploads/google/google_PNG19644.png"/>
+                                    </div>
+                                )
+                            }
                         </div>  
                     </div>
                 </div>
             </section>
-
-            <section>
- 
-            </section>
-
             <section className={el ? 'search active' : 'search'}>
                 <div className={cls.search_block}>
                     <div className={cls.search_header}>
@@ -145,6 +152,15 @@ const Header = () => {
                             <li>
                                 <BiUserCircle onClick={showPro}/>
                             </li>
+                            {
+                                user ? (
+                                    <li>
+                                        <FiEdit/>
+                                    </li>
+                                ) : (
+                                    null
+                                )
+                            }
                         </ul>
                     </div>
                 </div>
