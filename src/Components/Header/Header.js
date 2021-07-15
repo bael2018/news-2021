@@ -44,7 +44,7 @@ const Header = () => {
                             {
                                 user ? (
                                     <div>
-                                        <h3>Hello world</h3>
+                                        
                                     </div>
                                 ) : (
                                     <div className={cls.succssed}>
@@ -152,15 +152,6 @@ const Header = () => {
                             <li>
                                 <BiUserCircle onClick={showPro}/>
                             </li>
-                            {
-                                user ? (
-                                    <li>
-                                        <FiEdit/>
-                                    </li>
-                                ) : (
-                                    null
-                                )
-                            }
                         </ul>
                     </div>
                 </div>
@@ -200,11 +191,6 @@ const Header = () => {
                             <li>
                                 <NavLink exact activeClassName={cls.active} to='/sport'>
                                     Спорт
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink exact activeClassName={cls.active} to='/weather'>
-                                    Погода
                                 </NavLink>
                             </li>
                         </ul>

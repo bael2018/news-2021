@@ -7,7 +7,6 @@ import Tourism from '../pages/Tourism/Tourism'
 import World from '../pages/World/World'
 import Science from '../pages/Science/Science'
 import Sport from '../pages/Sport/Sport'
-import Weather from '../pages/Weather/Weaher'   
 import General from '../pages/General/General'
 
 const Main = () => {
@@ -22,7 +21,6 @@ const Main = () => {
                 <Route path='/world' component={World}></Route>
                 <Route path='/science' component={Science}></Route>
                 <Route path='/sport' component={Sport}></Route>
-                <Route path='/weather' component={Weather}></Route>
                 <Route path="/error">
                     <h2>Something went wrong Try Later</h2>
                 </Route>

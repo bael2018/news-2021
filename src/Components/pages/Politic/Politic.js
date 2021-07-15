@@ -145,7 +145,6 @@ const Politic = () => {
 
                             <span onClick={showChat} className={cls.single_card_left_footer_chat}>
                                 Комментарии
-                                <span>45</span>
                                 <FaComments/>
                             </span>
                         </div>
@@ -220,10 +219,6 @@ const Politic = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div className={cls.component_footer}>
-                
             </div>
         </div>
     )
