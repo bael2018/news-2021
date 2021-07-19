@@ -8,15 +8,12 @@
     background: white;
 }
 
-.recent_news{
-    margin-top: 40px;
-}
-
 .recent_news_header{
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-top: 30px;
 }
 
 .recent_news_header h1{

@@ -1,0 +1,24 @@
+
+.activecat{
+    opacity: 1 !important;
+    transform: scale(1) !important;
+    pointer-events: all !important;
+}
+
+.chat.activeChat{
+    opacity: 1;
+    pointer-events: all;
+}
+
+.chat{
+    width: 100%;
+    background-color: rgba(196, 196, 196, 0.541);
+    position: fixed;
+    left: 0;
+    transition: .3s;
+    top: 0;
+    height: 100vh;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+}

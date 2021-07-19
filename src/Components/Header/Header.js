@@ -1,22 +1,50 @@
 import { NavLink } from "react-router-dom"
 import cls from './Header.module.css'
 import { FaSearch , FaBars } from 'react-icons/fa'
-import { useState } from "react"
+import {useState } from "react"
 import { BiArrowBack , BiSearch , BiUserCircle} from 'react-icons/bi'
-import { FiEdit } from 'react-icons/fi'
 import './Anim.css'
 import {fire , provider} from '../admin/firebase'
+import { getNews } from "../../Api"
 import {useAuthState} from 'react-firebase-hooks/auth'
 
-const Header = () => {
+const Header = () => {   
+    const [search , setSearch] = useState('')
+    const [searchArray , setSearchArray] = useState([])
+    const showSearchBlock = e => {
+        e.preventDefault()
+    }
+
+    const searchBTN = e => {
+        e.preventDefault()
+        getNews(`.json` , '')
+        .then(res => res.json())
+        .then(r => {
+            const result =  Object.values(r).map(item => {
+                return Object.values(item)
+            })
+            const el = []
+            for(let i = 0; i < result.length; i++){
+                for(let j = 0; j < result[i].length; j++){
+                    el.push(result[i][j])
+                }
+            }
+            const newEl = []
+            const str = search.toUpperCase()
+            for(let i = 1; i < el.length; i++){
+                if(el[i].title.toUpperCase().includes(str)){
+                    newEl.push(el[i])
+                }
+            }
+            setSearchArray(newEl)
+            setSearch('')
+        })
+    }
     const [el , setEl] = useState(false)
     const showEl = () => setEl(!el)
-
     const [pro , setPro] = useState(false)
     const showPro = () => setPro(!pro)
-
     const [user] = useAuthState(fire.auth());
-
     const signIn = e => {
         e.preventDefault()
 
@@ -28,7 +56,6 @@ const Header = () => {
             console.log(err);
         })
     }
-
     return (
         <>
             <section className={pro ? 'profile activeProfile' : 'profile'}>
@@ -60,78 +87,35 @@ const Header = () => {
             <section className={el ? 'search active' : 'search'}>
                 <div className={cls.search_block}>
                     <div className={cls.search_header}>
-                        <input type='text' placeholder="Поиск"/>
-                        <span className={cls.search_button}><BiSearch/></span>
+                        <input value={search} onChange={e => {
+                            setSearch(e.target.value)
+                        }} type='text' placeholder="Поиск"/>
+                        <span onClick={searchBTN} className={cls.search_button}><BiSearch/></span>
                         <div onClick={showEl} className={cls.search_close}>x</div>
                     </div>
 
                     <div className={cls.search_body}>
-                        {/* <h2 className={cls.search_item}>
-                            Не найдено
-                        </h2> */}
-                        <div className={cls.search_body_inner}>
-                            <div>
-                                25.06
-                            </div>
-                            <div>
-                                <h3>Началась третья мировая война (Россия vs Китай)</h3>
-                                <p>Первыми начали атаку войска Китая. Но на следующий день они начали просить помощь</p>
-                            </div>
-                        </div>
-                        <div className={cls.search_body_inner}>
-                            <div>
-                                25.06
-                            </div>
-                            <div>
-                                <h3>Началась третья мировая война (Россия vs Китай)</h3>
-                                <p>Первыми начали атаку войска Китая. Но на следующий день они начали просить помощь</p>
-                            </div>
-                        </div>
-                        <div className={cls.search_body_inner}>
-                            <div>
-                                25.06
-                            </div>
-                            <div>
-                                <h3>Началась третья мировая война (Россия vs Китай)</h3>
-                                <p>Первыми начали атаку войска Китая. Но на следующий день они начали просить помощь</p>
-                            </div>
-                        </div>
-                        <div className={cls.search_body_inner}>
-                            <div>
-                                25.06
-                            </div>
-                            <div>
-                                <h3>Началась третья мировая война (Россия vs Китай)</h3>
-                                <p>Первыми начали атаку войска Китая. Но на следующий день они начали просить помощь</p>
-                            </div>
-                        </div>
-                        <div className={cls.search_body_inner}>
-                            <div>
-                                25.06
-                            </div>
-                            <div>
-                                <h3>Началась третья мировая война (Россия vs Китай)</h3>
-                                <p>Первыми начали атаку войска Китая. Но на следующий день они начали просить помощь</p>
-                            </div>
-                        </div>
-                        <div className={cls.search_body_inner}>
-                            <div>
-                                25.06
-                            </div>
-                            <div>
-                                <h3>Началась третья мировая война (Россия vs Китай)</h3>
-                                <p>Первыми начали атаку войска Китая. Но на следующий день они начали просить помощь</p>
-                            </div>
-                        </div>
-                        <div className={cls.search_body_inner}>
-                            <div>
-                                25.06
-                            </div>
-                            <div>
-                                <h3>Началась третья мировая война (Россия vs Китай)</h3>
-                                <p>Первыми начали атаку войска Китая. Но на следующий день они начали просить помощь</p>
-                            </div>
-                        </div>
+                        {
+                            searchArray.length !== 0 ? (
+                                searchArray.map(item => {
+                                    return (
+                                    <div onClick={showSearchBlock} key={item.id} className={cls.search_body_inner}>
+                                        <div>
+                                            {item.hour}:{item.minuts}
+                                        </div>
+                                        <div>
+                                            <h3>{item.title}</h3>
+                                            <p>{item.info}</p>
+                                        </div>
+                                    </div>
+                                    )
+                                })
+                            ) : (
+                                <h2 className={cls.search_item}>
+                                    Не найдено
+                                </h2>
+                            )
+                        }
                     </div>
                 </div>
             </section>

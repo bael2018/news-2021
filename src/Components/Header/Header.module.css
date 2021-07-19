@@ -251,7 +251,10 @@
 
 .search_body_inner div:nth-child(2) p{
     margin: 0px;
+    height: 75px;
     margin-top: 10px;
+    overflow: hidden;
+    line-height: 1.6;
 }
 
 .search_close{

@@ -8,8 +8,28 @@ import World from '../pages/World/World'
 import Science from '../pages/Science/Science'
 import Sport from '../pages/Sport/Sport'
 import General from '../pages/General/General'
+import { useEffect, useState } from 'react'
+import { getNews } from '../../Api'
 
 const Main = () => {
+    const [early , setEarly] = useState([])
+    useEffect(() => {
+        getNews('earlier' , '.json')
+        .then(res => res.json())
+        .then(r => {
+            const data = Object.entries(r).map(item => {
+                const id = item[0];
+                return {
+                    ...item[1],
+                    id
+                }
+            })
+
+            const clicedArray = data.slice(0. , 4)
+            setEarly(clicedArray)
+        })
+    } , [])
+
     return (
         <section className={cls.container}>
             <Switch>
@@ -31,34 +51,21 @@ const Main = () => {
                     <h1>Ранее</h1>
                 </div>
                 <div className={cls.recent_news_body}>
-                    <div className={cls.recent_news_body_child}>
-                        <span>
-                            События
-                        </span>
-                        <img src='https://www.techrepublic.com/a/hub/i/r/2019/08/06/53468105-5f4b-45dc-b51d-9c901a348849/resize/1200x/11c5f180724798e54b70230c844a129a/istock-1036557452.jpg'/>
-                        <h2>Велогонщики массово упали из-за болельщика</h2>
-                    </div>
-                    <div className={cls.recent_news_body_child}>
-                        <span>
-                            Экономика
-                        </span>
-                        <img src='https://st2.depositphotos.com/4296911/9108/i/600/depositphotos_91087856-stock-photo-the-urban-landscape-of-large.jpg'/>
-                        <h2>Велогонщики массово упали из-за болельщика</h2>
-                    </div>  
-                    <div className={cls.recent_news_body_child}>
-                        <span>
-                            Туризм
-                        </span>
-                        <img src='https://files.guidedanmark.org/files/483/259449_Tiger_i_Aalborg_Zoo.jpg?width=1024'/>
-                        <h2>Велогонщики массово упали из-за болельщика</h2>
-                    </div>  
-                    <div className={cls.recent_news_body_child}>
-                        <span>
-                            События
-                        </span>
-                        <img src='https://www.ctvnews.ca/polopoly_fs/1.4129667.1539264370!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg'/>
-                        <h2>Велогонщики массово упали из-за болельщика</h2>
-                    </div>  
+                    {
+                        early.length !== 0 ? (
+                            early.map(item => {
+                                return <div key={item.id} className={cls.recent_news_body_child}>
+                                <span>
+                                    Категория
+                                </span>
+                                <img src={item.img}/>
+                                <h2>{item.title}</h2>
+                            </div>
+                            })
+                        ) : (
+                            null
+                        )
+                    }                            
                 </div>
             </div>
         </section>

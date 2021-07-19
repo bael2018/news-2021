@@ -1,9 +1,10 @@
 
+
 const General = () => {
     return (
-        <div>
+        <>
             Hello world
-        </div>
+        </>
     )
 }
 
