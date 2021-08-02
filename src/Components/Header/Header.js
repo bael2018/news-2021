@@ -1,12 +1,13 @@
 import { NavLink } from "react-router-dom"
 import cls from './Header.module.css'
-import { FaSearch , FaBars } from 'react-icons/fa'
+import { FaSearch } from 'react-icons/fa'
 import {useState } from "react"
 import { BiArrowBack , BiSearch , BiUserCircle} from 'react-icons/bi'
 import './Anim.css'
 import {fire , provider} from '../admin/firebase'
 import { getNews } from "../../Api"
 import {useAuthState} from 'react-firebase-hooks/auth'
+import { arrayfunc } from "../ShortedFunc"
 
 const Header = () => {   
     const [search , setSearch] = useState('')
@@ -17,29 +18,16 @@ const Header = () => {
 
     const searchBTN = e => {
         e.preventDefault()
-        getNews(`.json` , '')
+        getNews('news.json' , '')
         .then(res => res.json())
         .then(r => {
-            const result =  Object.values(r).map(item => {
-                return Object.values(item)
-            })
-            const el = []
-            for(let i = 0; i < result.length; i++){
-                for(let j = 0; j < result[i].length; j++){
-                    el.push(result[i][j])
-                }
-            }
-            const newEl = []
-            const str = search.toUpperCase()
-            for(let i = 1; i < el.length; i++){
-                if(el[i].title.toUpperCase().includes(str)){
-                    newEl.push(el[i])
-                }
-            }
-            setSearchArray(newEl)
+            const firstBase = arrayfunc(r)
+            const filterArray = firstBase.filter(item => item.title.toUpperCase().includes(search.toUpperCase()))
             setSearch('')
+            setSearchArray(filterArray)
         })
     }
+
     const [el , setEl] = useState(false)
     const showEl = () => setEl(!el)
     const [pro , setPro] = useState(false)
@@ -56,6 +44,7 @@ const Header = () => {
             console.log(err);
         })
     }
+    
     return (
         <>
             <section className={pro ? 'profile activeProfile' : 'profile'}>
@@ -112,7 +101,7 @@ const Header = () => {
                                 })
                             ) : (
                                 <h2 className={cls.search_item}>
-                                    Не найдено
+                                    Не найдено 
                                 </h2>
                             )
                         }
@@ -143,37 +132,37 @@ const Header = () => {
                     <div>
                         <ul>
                             <li>
-                                <NavLink exact activeClassName={cls.active} to='/politic'>
+                                <NavLink exact activeClassName={cls.active} to='/category/politic'>
                                     Политика
                                 </NavLink>
                             </li>
                             <li>
-                                <NavLink exact activeClassName={cls.active} to='/ecology'>
+                                <NavLink exact activeClassName={cls.active} to='/category/economic'>
                                     Экономика
                                 </NavLink>      
                             </li>
                             <li>
-                                <NavLink exact activeClassName={cls.active} to='/public'>
+                                <NavLink exact activeClassName={cls.active} to='/category/society'>
                                     Общество
                                 </NavLink>
                             </li>
                             <li>
-                                <NavLink exact activeClassName={cls.active} to='/tourism'>
+                                <NavLink exact activeClassName={cls.active} to='/category/tourism'>
                                     Туризм
                                 </NavLink> 
                             </li>
                             <li>
-                                <NavLink exact activeClassName={cls.active} to='/world'>
+                                <NavLink exact activeClassName={cls.active} to='/category/world'>
                                     Мир
                                 </NavLink>
                             </li>
                             <li>
-                                <NavLink exact activeClassName={cls.active} to='/science'>
+                                <NavLink exact activeClassName={cls.active} to='/category/science'>
                                     События
                                 </NavLink>
                             </li>
                             <li>
-                                <NavLink exact activeClassName={cls.active} to='/sport'>
+                                <NavLink exact activeClassName={cls.active} to='/category/sport'>
                                     Спорт
                                 </NavLink>
                             </li>

@@ -1,0 +1,128 @@
+
+.general{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.general_child_one{
+    width: 80%;
+}
+
+.general_block{
+    justify-content: space-between;
+    display: flex;
+    height: 350px;
+    width: 100%;
+}
+
+.general_block img{
+    height: 100%;
+    object-fit: cover;
+    width: 58%;
+}
+
+.general_block_wrapper{
+    flex-direction: column;
+    display: flex;
+    width: 40%;
+    justify-content: space-between;
+    height: 100%;
+    overflow: hidden;
+}
+
+.general_block_wrapper_upper{
+    width: 100%;
+    height: 80%;
+    justify-content: space-between;
+    flex-direction: column;
+    display: flex;
+}
+
+.general_block_wrapper_upper h3{
+    color: rgb(63, 63, 63);
+    margin: 0px;
+    transition: .3s;
+    height: 30%;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.general_categories_container_child div h4:hover,
+.general_block_wrapper_upper h3:hover{
+    color: rgb(22, 209, 241);
+}
+
+.general_block_wrapper_upper p{
+    width: 100%;
+    overflow: hidden;
+    height: 65%;
+    margin: 0px;
+    font-size: 17px;
+    line-height: 1.5;
+    color: rgb(63, 63, 63);
+}
+
+.general_block_wrapper_lower{
+    height: 15%;
+    width: 100%;
+}
+
+.general_block_wrapper_lower p{
+    color: rgb(170, 170, 170);
+    display: flex;
+    font-weight: 500;
+    align-items: center;
+}
+
+.general_block_wrapper_lower p svg{
+    margin-right: 5px;
+}
+
+.general_categories_container{
+    width: 100%;
+    margin-top: 50px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    display: flex;
+}
+
+.general_categories_container_child{
+    width: 30%;
+    margin-bottom: 20px;
+}
+
+.general_categories_container_child div{
+    width: 100%;
+    margin-top: 30px;
+}
+
+.general_categories_container div h3{
+    color: rgb(77, 77, 77);
+    margin: 0px;
+    padding-bottom: 15px;
+    font-size: 28px;
+    border-bottom: 1px solid rgb(180, 180, 180);
+    margin-bottom: 25px;
+}
+
+.general_categories_container_child div img{
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.general_categories_container_child div h4{ 
+    color: rgb(95, 95, 95);   
+    font-size: 25px;
+    transition: .3s;
+    margin: 0px;
+    cursor: pointer;
+}
+
+.general_categories_container_child div p{
+    line-height: 1.6;
+    height: 130px;
+    overflow: hidden;
+}

@@ -1,31 +1,20 @@
 import { Route , Switch , Redirect } from 'react-router-dom'
 import cls from './Main.module.css'
-import Politic from '../pages/Politic/Politic'
-import Economy from '../pages/Economy/Economy'
-import Public from '../pages/People/Public'
-import Tourism from '../pages/Tourism/Tourism'
-import World from '../pages/World/World'
-import Science from '../pages/Science/Science'
-import Sport from '../pages/Sport/Sport'
-import General from '../pages/General/General'
+import General from '../pages/General'
 import { useEffect, useState } from 'react'
 import { getNews } from '../../Api'
+import { arrayfunc } from '../ShortedFunc'
+import NewPage from '../pages/NewPage'
 
 const Main = () => {
     const [early , setEarly] = useState([])
     useEffect(() => {
-        getNews('earlier' , '.json')
+        getNews('news.json' , '')
         .then(res => res.json())
         .then(r => {
-            const data = Object.entries(r).map(item => {
-                const id = item[0];
-                return {
-                    ...item[1],
-                    id
-                }
-            })
-
-            const clicedArray = data.slice(0. , 4)
+            const data = arrayfunc(r)
+            const filterArray = data.filter(item => item.view === 'before')
+            const clicedArray = filterArray.slice(0. , 4)
             setEarly(clicedArray)
         })
     } , [])
@@ -34,14 +23,9 @@ const Main = () => {
         <section className={cls.container}>
             <Switch>
                 <Route exact path='/' component={General}></Route>
-                <Route path='/politic' component={Politic}></Route>
-                <Route path='/ecology' component={Economy}></Route>
-                <Route path='/public' component={Public}></Route>
-                <Route path='/tourism' component={Tourism}></Route>
-                <Route path='/world' component={World}></Route>
-                <Route path='/science' component={Science}></Route>
-                <Route path='/sport' component={Sport}></Route>
-                <Route path="/error">
+                <Route path='/category/:id' component={NewPage}/>
+                <Route path='/single/:cat' component={NewPage}/>
+                <Route path="/category/:id">
                     <h2>Something went wrong Try Later</h2>
                 </Route>
                 <Redirect to='/error'/>
@@ -56,7 +40,7 @@ const Main = () => {
                             early.map(item => {
                                 return <div key={item.id} className={cls.recent_news_body_child}>
                                 <span>
-                                    Категория
+                                    {item.view}
                                 </span>
                                 <img src={item.img}/>
                                 <h2>{item.title}</h2>

@@ -1,17 +1,16 @@
-import cls from './Politic.module.css'
+import cls from './NewPage.module.css'
 import { AiOutlineDown , AiOutlineLike } from 'react-icons/ai'
 import { CgCalendarDates } from 'react-icons/cg'
 import { useEffect, useState } from 'react'
-import './Politic.css'
+import './NewPage.css'
 import { FaComments } from 'react-icons/fa'
 import { MdPlaylistAdd } from 'react-icons/md'
 import { BiArrowBack , BiSearch} from 'react-icons/bi'
 import { getNews } from '../../../Api'
-import { arrayfunc } from '../../ShortedFunc'
 import Loader from '../../Loader'
 import { useParams } from 'react-router-dom'
 
-const Politic = () => {
+const NewPage = () => {
     const [cat , setCat] = useState(false)
     const showCat = () => setCat(!cat)
     const [chat , setChat] = useState(false)
@@ -21,29 +20,47 @@ const Politic = () => {
     const [arr , setArr] = useState([])
     const [singleArr , setSingleArr] = useState([])
     const [loading , setLoading] = useState(false)
-    
+
     const {id} = useParams()
-    console.log(id);
     
     const singleCard = e => {
-        getNews(`politic` , `${e.target.id}.json`)
-        .then(res => res.json())
+        console.log(e);
+        getNews(`news.json` , ``)
+        .then(res => res.json() , setLoading(true))
         .then(r => {
+            setLoading(false)
             const singleData = Object.values(r)
-            setSingleArr(singleData)
+            const singleNew = singleData.filter(item => item.id === e)
+            setSingleArr(singleNew)
         })
         changePageToSingle()
     }
 
     useEffect(() => {
-        getNews(`politic.json` , '')
+        getNews(`news.json` , '' , '')
         .then(res => res.json() , setLoading(true))
         .then(r => {
             setLoading(false)
-            const data = arrayfunc(r)
-            setArr(data)
+            if(r !== null){
+                const data = Object.entries(r).map(item => {
+                    const id = item[0];
+                    return {
+                        ...item[1],
+                        accept: id
+                    }
+                })
+                const filteredArray = data.filter(item => item.view === id)
+                console.log(filteredArray);
+                setArr(filteredArray)
+            }else{
+                return
+            }
         })
-    }, [])
+    }, [id])
+    
+    const heartBtn = e => {
+        console.log(e);
+    }
 
     return (
         <div className={cls.component_container}>
@@ -52,7 +69,7 @@ const Politic = () => {
                     !singleNew ? (
                         <div className={cls.component_header}>
                             <div className={cls.component_title}>
-                                <h2>Политика</h2>
+                                <h2>{id}</h2>
                             </div>
                             <div className={cls.component_filter}>
                                 <span onClick={showCat}>
@@ -88,7 +105,7 @@ const Politic = () => {
                                         </div>
                                         <div className={cls.component_child_body , cls.component_child_body_active}>
                                             <span><CgCalendarDates/>{item.hour}:{item.minuts}</span>
-                                            <h2 id={item.id} onClick={singleCard}>
+                                            <h2 id={item.id} onClick={() => singleCard(item.id)}>
                                                 {item.title}
                                             </h2>
                                             <p className={cls.component_child_body_p}>
@@ -103,7 +120,7 @@ const Politic = () => {
                                         </div>
                                         <div className={cls.component_child_body}>
                                             <span><CgCalendarDates/>{item.hour}:{item.minuts}</span>
-                                            <h2 id={item.id} onClick={singleCard}>
+                                            <h2 id={item.id} onClick={() => singleCard(item.id)}>
                                                 {item.title}
                                             </h2>
                                             <p>
@@ -118,33 +135,41 @@ const Politic = () => {
                     ) : (
                         <>
                             <div className={cls.single_card}>
-                                <div className={cls.single_card_left}>
-                                    <img className={cls.single_card_left_picture} src={singleArr[3]}/>
-                                    <div className={cls.single_card_left_body}>
-                                        <span><CgCalendarDates/>{singleArr[0]}:{singleArr[6]}</span>
-                                        <h2>{singleArr[9]}</h2>
-                                        <p>
-                                            {singleArr[4]}
-                                        </p>
-                                    </div>
-                                    <div className={cls.single_card_left_footer}>
-                                        <div>
-                                            <span>
-                                                {singleArr[5]}
-                                                <AiOutlineLike/>
-                                            </span>
-                                            |
-                                            <span>
-                                                <MdPlaylistAdd/>
-                                            </span>
-                                        </div>
-            
-                                        <span onClick={showChat} className={cls.single_card_left_footer_chat}>
-                                            Комментарии
-                                            <FaComments/>
-                                        </span>
-                                    </div>
-                                </div>
+                                {
+                                   loading ? (
+                                        <Loader/>
+                                   ) : (
+                                        singleArr.map(item => 
+                                            <div key={item.id} className={cls.single_card_left}>
+                                                <img className={cls.single_card_left_picture} src={item.img}/>
+                                                <div className={cls.single_card_left_body}>
+                                                    <span><CgCalendarDates/>{item.hour}:{item.minuts}</span>
+                                                    <h2>{item.title}</h2>
+                                                    <p>
+                                                        {item.info}
+                                                    </p>
+                                                </div>
+                                                <div className={cls.single_card_left_footer}>
+                                                    <div>
+                                                        <span>
+                                                            {item.isLiked}
+                                                            <AiOutlineLike onClick={() => heartBtn(item.accept)} />
+                                                        </span>
+                                                        |
+                                                        <span>
+                                                            <MdPlaylistAdd/>
+                                                        </span>
+                                                    </div>
+                        
+                                                    <span onClick={showChat} className={cls.single_card_left_footer_chat}>
+                                                        Комментарии
+                                                        <FaComments/>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        )
+                                   )
+                                }
                                 <div className={cls.single_card_right}>
                                     <h3>Рекомендуем</h3>
         
@@ -220,4 +245,4 @@ const Politic = () => {
     )
 }
 
-export default Politic
+export default NewPage
